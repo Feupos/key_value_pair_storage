@@ -13,5 +13,5 @@ set(headers
 )
 
 set(test_sources
-  src/tmp_test.cpp
+  src/json_storage_test.cpp
 )

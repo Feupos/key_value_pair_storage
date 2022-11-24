@@ -52,6 +52,11 @@ jobs:
         cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local" -Dgtest_force_shared_crt=1
         cmake --build build --config Release
         cmake --build build --target install --config Release
+        git clone https://github.com/nlohmann/json.git --branch v3.11.2
+        cd json
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
+        cmake --build build --config Release
+        cmake --build build --target install --config Release
         cd ../key_value_pair_storage
 
     - name: configure

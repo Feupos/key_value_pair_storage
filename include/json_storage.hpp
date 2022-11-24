@@ -1,4 +1,9 @@
+#include <nlohmann/json.hpp>
+#include <string>
+
 #include "storage_interface.hpp"
+
+using json = nlohmann::json;
 
 class JsonStorage : public StorageInterface
 {
@@ -7,4 +12,9 @@ class JsonStorage : public StorageInterface
   bool SetKeyValue(const std::string& key, const std::string& value);
   bool DeleteKey(const std::string& key);
   std::string GetKey(const std::string& key);
+  bool SaveDataToFile();
+
+ private:
+  std::string _file_name;
+  json _data;
 };
