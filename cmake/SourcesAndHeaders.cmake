@@ -1,5 +1,5 @@
 set(sources
-    src/tmp.cpp
+    src/json_storage.cpp
 )
 
 set(exe_sources
@@ -8,7 +8,8 @@ set(exe_sources
 )
 
 set(headers
-    include/project/tmp.hpp
+    include/storage_interface.hpp
+    include/json_storage.hpp
 )
 
 set(test_sources
