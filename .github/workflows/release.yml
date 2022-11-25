@@ -28,7 +28,6 @@ jobs:
     
     - name: set version name
       id: version
-      if: ${{ runner.os != 'Windows' }}
       run: echo ::set-output name=name::${GITHUB_REF#refs/tags/}
 
     - name: Checkout
@@ -58,7 +57,6 @@ jobs:
         cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
         cmake --build build --config Release
         cmake --build build --target install --config Release
-        cd ../key_value_pair_storage
 
     - name: configure
       run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
@@ -75,14 +73,12 @@ jobs:
     # with the actual files needed (i.e. *.lib/*.a and *.h(pp))
 
     - name: generate archive
-      if: ${{ runner.os != 'Windows' }}
       run: |
         rm -rf build
         tar -cvzf $HOME/artifact.tar.gz .
 
     - name: upload artifacts
       uses: actions/upload-artifact@v2
-      if: ${{ runner.os != 'Windows' }}
       with:
         name: ${{ runner.os }}-${{ steps.version.outputs.name }}
         path: '~/artifact.*'

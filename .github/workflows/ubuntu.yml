@@ -41,7 +41,6 @@ jobs:
         cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
         cmake --build build --config Release
         cmake --build build --target install --config Release
-        cd ../key_value_pair_storage
 
     - name: configure
       run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/$INSTALL_LOCATION -DKeyValuePairStorage_ENABLE_CODE_COVERAGE=1
