@@ -158,6 +158,7 @@ include(cmake/Doxygen.cmake)
 # Identify and link with the specific "packages" the project uses
 add_library(asio INTERFACE)
 target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+target_include_directories(asio INTERFACE ${CMAKE_SOURCE_DIR}/asio/include)
 target_link_libraries(asio INTERFACE pthread)
 
 find_package(nlohmann_json 3.2.0 REQUIRED)
