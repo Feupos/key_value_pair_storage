@@ -1,3 +1,5 @@
+#pragma once
+
 #include <nlohmann/json.hpp>
 #include <string>
 
@@ -5,6 +7,11 @@
 
 using json = nlohmann::json;
 
+/* 
+This is a basic storage system using json files used to implement
+an MVP version of the application, it has slow performance and does
+not allow concurrent access to the storage 
+*/
 class JsonStorage : public StorageInterface
 {
  public:

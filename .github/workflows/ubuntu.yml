@@ -26,18 +26,25 @@ jobs:
         path: ${{ github.workspace }}/${{ env.INSTALL_LOCATION }}
         key: ${{ runner.os }}-dependencies
 
-    - name: install GoogleTest
+    - name: install dependencies
       if: ${{ steps.cache.output.cache-hit != 'true' }}
       run: |
+        apt-get install -y libasio-dev
         cd ..
         git clone https://github.com/google/googletest.git --branch release-1.10.0
         cd googletest
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/$INSTALL_LOCATION
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local" -Dgtest_force_shared_crt=1
         cmake --build build --config Release
         cmake --build build --target install --config Release
+        git clone https://github.com/nlohmann/json.git --branch v3.11.2
+        cd json
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
+        cmake --build build --config Release
+        cmake --build build --target install --config Release
+        cd ../key_value_pair_storage
 
     - name: configure
-      run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/$INSTALL_LOCATION -DProject_ENABLE_CODE_COVERAGE=1
+      run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/$INSTALL_LOCATION -DKeyValuePairStorage_ENABLE_CODE_COVERAGE=1
       
     - name: build
       run: cmake --build build --config $BUILD_TYPE -j4

@@ -79,6 +79,7 @@ std::string JsonStorage::GetKey(const std::string& key)
   }
   catch(const std::exception& e)
   {
+    // Return empty string in case key is not found
     ret = "";
   }
   
