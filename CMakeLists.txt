@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.15)
 #
 
 project(
-  "KeyValuePairStorage"
+  "KVPStorage"
   VERSION 0.1.0
   LANGUAGES CXX
 )
@@ -164,16 +164,14 @@ target_link_libraries(asio INTERFACE pthread)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 target_link_libraries(
   ${PROJECT_NAME}
-  PRIVATE
+  PUBLIC
     nlohmann_json::nlohmann_json
-    asio
 )
 if(${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
   target_link_libraries(
     ${PROJECT_NAME}_LIB
     PUBLIC
       nlohmann_json::nlohmann_json
-      asio
   )
 endif()
 
