@@ -6,6 +6,8 @@
 
 Simple application to allow storage of key value pairs.
 
+Template for project structure is generated with base from https://github.com/filipdutescu/modern-cpp-template
+
 ### Prerequisites
 
 To use the project you need the following tools:
