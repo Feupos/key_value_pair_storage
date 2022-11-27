@@ -10,10 +10,10 @@ set(exe_sources
 )
 
 set(headers
-    include/tcp_server.hpp
-    include/request_handler.hpp
-    include/storage_interface.hpp
-    include/json_storage.hpp
+    include/kvpstorage/tcp_server.hpp
+    include/kvpstorage/request_handler.hpp
+    include/kvpstorage/storage_interface.hpp
+    include/kvpstorage/json_storage.hpp
 )
 
 set(test_sources
