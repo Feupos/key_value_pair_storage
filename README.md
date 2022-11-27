@@ -64,7 +64,7 @@ ctest -C Release  # or `ctest -C Debug` or any other configuration you wish to t
 
 ## Authors
 
-* **Felipe dos Satnos Neves** - [@filipdutescu](https://github.com/Feupos)
+* **Felipe dos Satnos Neves** - [@feupos](https://github.com/Feupos)
 
 ## License
 
