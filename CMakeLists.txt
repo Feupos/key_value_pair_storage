@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(
   "KVPStorage"
-  VERSION 0.1.0
+  VERSION 0.1.3
   LANGUAGES CXX
 )
 
@@ -155,7 +155,7 @@ include(cmake/Doxygen.cmake)
 # Model project dependencies
 #
 
-find_package(Boost 1.40.0 REQUIRED system)
+find_package(Boost 1.80.0 REQUIRED system)
 include_directories(${Boost_INCLUDE_DIR})
 
 find_package(nlohmann_json 3.2.0 REQUIRED)
