@@ -2,11 +2,11 @@
 
 #include <iostream>
 #include <memory>
+#include <asio.hpp>
 
-#include "asio.hpp"
-#include "json_storage.hpp"
-#include "tcp_server.hpp"
-#include "request_handler.hpp"
+#include "kvpstorage/json_storage.hpp"
+#include "kvpstorage/tcp_server.hpp"
+#include "kvpstorage/request_handler.hpp"
 
 int main(int argc, char** argv)
 {

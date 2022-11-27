@@ -3,8 +3,8 @@
 
 #include <gtest/gtest.h>
 
-#include "json_storage.hpp"
-#include "request_handler.hpp"
+#include "kvpstorage/json_storage.hpp"
+#include "kvpstorage/request_handler.hpp"
 
 static const std::string TEST_FILE_NAME{"test.json"};
 

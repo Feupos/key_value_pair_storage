@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "storage_interface.hpp"
+#include "kvpstorage/storage_interface.hpp"
 
 class RequestHandler
 {

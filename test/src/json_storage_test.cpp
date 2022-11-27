@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "json_storage.hpp"
+#include "kvpstorage/json_storage.hpp"
 
 static const std::string TEST_FILE_NAME{"test.json"};
 

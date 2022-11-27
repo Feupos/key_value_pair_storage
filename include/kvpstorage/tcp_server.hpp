@@ -3,8 +3,8 @@
 #include <asio.hpp>
 #include <memory>
 
-#include "request_handler.hpp"
-#include "storage_interface.hpp"
+#include "kvpstorage/request_handler.hpp"
+#include "kvpstorage/storage_interface.hpp"
 
 using asio::ip::tcp;
 
