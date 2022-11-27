@@ -8,22 +8,37 @@ Simple application to allow storage of key value pairs.
 
 ### Prerequisites
 
-This project is meant to be only a template, thus versions of the software used
-can be change to better suit the needs of the developer(s). If you wish to use the
-template *as-is*, meaning using the versions recommended here, then you will need:
+To use the project you need the following tools:
 
 * **CMake v3.15+** - found at [https://cmake.org/](https://cmake.org/)
 
 * **C++ Compiler** - needs to support at least the **C++17** standard, i.e. *MSVC*,
 *GCC*, *Clang*
 
-> ***Note:*** *You also need to be able to provide ***CMake*** a supported
-[generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html).*
+You also need to install the dependencies for gtest, nhloman json and boost. This can be done in Ubuntu with the following commands:
+
+```bash
+wget -c 'http://sourceforge.net/projects/boost/files/boost/1.80.0/boost_1_80_0.tar.bz2/download'
+tar xf download
+cd boost_1_80_0
+./bootstrap.sh
+sudo ./b2 install
+cd ..
+git clone https://github.com/google/googletest.git --branch release-1.10.0
+cd googletest
+cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local" -Dgtest_force_shared_crt=1
+cmake --build build --config Release
+cmake --build build --target install --config Release
+git clone https://github.com/nlohmann/json.git --branch v3.11.2
+cd json
+cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
+cmake --build build --config Release
+cmake --build build --target install --config Release
+```
 
 ## Building the project
 
-To build the project, all you need to do, ***after correctly
-[installing the project](README.md#Installing)***, is run a similar **CMake** routine
+To build the project, all you need to do is run a similar **CMake** routine
 to the the one below:
 
 ```bash
@@ -39,7 +54,7 @@ to use Doxygen. This is easily done, by modifying the workflow shown above as fo
 
 ```bash
 mkdir build/ && cd build/
-cmake .. -D<project_name>_ENABLE_DOXYGEN=1 -DCMAKE_INSTALL_PREFIX=/absolute/path/to/custom/install/directory
+cmake .. -DKVPStorage_ENABLE_DOXYGEN=1 -DCMAKE_INSTALL_PREFIX=/absolute/path/to/custom/install/directory
 cmake --build . --target doxygen-docs
 ```
 
@@ -47,7 +62,7 @@ cmake --build . --target doxygen-docs
 
 ## Running the tests
 
-By default, the template uses [Google Test](https://github.com/google/googletest/)
+[Google Test](https://github.com/google/googletest/) is used
 for unit testing. Unit testing can be disabled in the options, by setting the
 `ENABLE_UNIT_TESTING` (from
 [cmake/StandardSettings.cmake](cmake/StandardSettings.cmake)) to be false. To run
@@ -64,7 +79,7 @@ ctest -C Release  # or `ctest -C Debug` or any other configuration you wish to t
 
 ## Authors
 
-* **Felipe dos Satnos Neves** - [@feupos](https://github.com/Feupos)
+* **Felipe dos Santos Neves** - [@feupos](https://github.com/Feupos)
 
 ## License
 

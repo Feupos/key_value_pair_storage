@@ -29,6 +29,30 @@ TEST_F(RequestHandlerTest, HandleSetGetDelete_good_weather)
     EXPECT_EQ(request_handler.HandleRequest("GET foo"), "");
 }
 
+TEST_F(RequestHandlerTest, HandleUnknownCommand)
+{
+    RequestHandler request_handler(_storage);
+    EXPECT_EQ(request_handler.HandleRequest("TEST foo bar"), "Unknown Command");
+}
+
+TEST_F(RequestHandlerTest, HandleGetInvalidArguments)
+{
+    RequestHandler request_handler(_storage);
+    EXPECT_EQ(request_handler.HandleRequest("GET foo foo"), "Invalid arguments");
+}
+
+TEST_F(RequestHandlerTest, HandleSetInvalidArguments)
+{
+    RequestHandler request_handler(_storage);
+    EXPECT_EQ(request_handler.HandleRequest("SET foo foo bar bar"), "Invalid arguments");
+}
+
+TEST_F(RequestHandlerTest, HandleDeleteInvalidArguments)
+{
+    RequestHandler request_handler(_storage);
+    EXPECT_EQ(request_handler.HandleRequest("DELETE foo foo"), "Invalid arguments");
+}
+
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);

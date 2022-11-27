@@ -6,13 +6,15 @@ cmake_minimum_required(VERSION 3.15)
 
 project(
   "KVPStorage"
-  VERSION 0.1.0
+  VERSION 0.1.3
   LANGUAGES CXX
 )
 
 #
 # Set project options
 #
+
+option(KVPStorage_BUILD_EXECUTABLE "Build project executables" ON)
 
 include(cmake/StandardSettings.cmake)
 include(cmake/StaticAnalyzers.cmake)
@@ -25,7 +27,6 @@ message(STATUS "Started CMake for ${PROJECT_NAME} v${PROJECT_VERSION}...\n")
 if (UNIX)
     add_compile_options("$<$<CONFIG:DEBUG>:-D_DEBUG>")    #this will allow to use same _DEBUG macro available in both Linux as well as Windows - MSCV environment. Easy to put Debug specific code.
 endif (UNIX)
-
 
 #
 # Setup alternative names
@@ -155,13 +156,16 @@ include(cmake/Doxygen.cmake)
 # Model project dependencies
 #
 
-find_package(Boost 1.40.0 REQUIRED system)
+find_package(Threads REQUIRED)
+
+find_package(Boost 1.80.0 REQUIRED system)
 include_directories(${Boost_INCLUDE_DIR})
 
 find_package(nlohmann_json 3.2.0 REQUIRED)
 target_link_libraries(
   ${PROJECT_NAME}
   PUBLIC
+    ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
     nlohmann_json::nlohmann_json
 )
@@ -169,6 +173,7 @@ if(${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
   target_link_libraries(
     ${PROJECT_NAME}_LIB
     PUBLIC
+      ${CMAKE_THREAD_LIBS_INIT}
       ${Boost_LIBRARIES}
       nlohmann_json::nlohmann_json
   )
