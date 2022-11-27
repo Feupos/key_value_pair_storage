@@ -155,22 +155,21 @@ include(cmake/Doxygen.cmake)
 # Model project dependencies
 #
 
-# Identify and link with the specific "packages" the project uses
-add_library(asio INTERFACE)
-target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
-target_include_directories(asio INTERFACE ${CMAKE_SOURCE_DIR}/asio/include)
-target_link_libraries(asio INTERFACE pthread)
+find_package(Boost 1.40.0 REQUIRED system)
+include_directories(${Boost_INCLUDE_DIR})
 
 find_package(nlohmann_json 3.2.0 REQUIRED)
 target_link_libraries(
   ${PROJECT_NAME}
   PUBLIC
+    ${Boost_LIBRARIES}
     nlohmann_json::nlohmann_json
 )
 if(${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
   target_link_libraries(
     ${PROJECT_NAME}_LIB
     PUBLIC
+      ${Boost_LIBRARIES}
       nlohmann_json::nlohmann_json
   )
 endif()

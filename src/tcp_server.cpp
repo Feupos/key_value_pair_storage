@@ -1,6 +1,6 @@
 #include "kvpstorage/tcp_server.hpp"
 
-TcpServer::TcpServer(asio::io_context& io_context, std::shared_ptr<StorageInterface> storage, short unsigned int port)
+TcpServer::TcpServer(boost::asio::io_context& io_context, std::shared_ptr<StorageInterface> storage, short unsigned int port)
     : RequestHandler(storage),
       _acceptor(io_context, tcp::endpoint(tcp::v4(), port)),
       _socket(io_context)
@@ -22,7 +22,7 @@ void TcpServer::AcceptConnection()
 
 void TcpServer::ReadData()
 {
-  _socket.async_read_some(asio::buffer(_buffer, MAX_LENGTH), [this](std::error_code ec, std::size_t length) {
+  _socket.async_read_some(boost::asio::buffer(_buffer, MAX_LENGTH), [this](std::error_code ec, std::size_t length) {
     if (!ec)
     {
       std::string response = this->HandleRequest(std::string(_buffer, length));
@@ -33,7 +33,7 @@ void TcpServer::ReadData()
 
 void TcpServer::WriteData(std::string data)
 {
-  asio::async_write(_socket, asio::buffer(data), [this](std::error_code ec, std::size_t /*length*/) {
+  boost::asio::async_write(_socket, boost::asio::buffer(data), [this](std::error_code ec, std::size_t /*length*/) {
     if (!ec)
     {
       ReadData();

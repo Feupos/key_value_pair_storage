@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <memory>
-#include <asio.hpp>
+#include <boost/asio.hpp>
 
 #include "kvpstorage/json_storage.hpp"
 #include "kvpstorage/tcp_server.hpp"
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 
   if (is_server != 0)
   {
-    asio::io_context io_context;
+    boost::asio::io_context io_context;
     TcpServer server(io_context, storage, tcp_port);
 
     io_context.run();
