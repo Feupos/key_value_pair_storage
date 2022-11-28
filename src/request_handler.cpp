@@ -40,6 +40,10 @@ std::string RequestHandler::HandleRequest(std::string request)
             else
             {
                 response = "Invalid arguments";
+                for(auto arg: query)
+                {
+                    std::cout << arg << std::endl;
+                }
             }
         }
         else if(query[0] == "SET")
@@ -68,6 +72,10 @@ std::string RequestHandler::HandleRequest(std::string request)
             else
             {
                 response = "Invalid arguments";
+                for(auto arg: query)
+                {
+                    std::cout << arg << std::endl;
+                }
             }
         }
         else
