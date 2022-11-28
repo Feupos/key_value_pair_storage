@@ -25,19 +25,22 @@ jobs:
         sudo apt-get upgrade
         sudo apt-get install -y make gcc g++ unzip git bc python device-tree-compiler mtd-utils
 
+    - name: set version name
+      id: version
+      run: echo ::set-output name=name::${GITHUB_REF#refs/tags/}
+
     - name: Bulid
+      env:
+          RELEASE_VERSION: ${{ steps.version.outputs.name }}
       run: |
+        echo build kvpstorage $RELEASE_VERSION using make BR2_EXTERNAL=/opt/buildroot-kvpstorage qemu_arm_versatile_kvpstorage_defconfig
         mkdir /opt/artifacts
         cd /opt/buildroot
-        git checkout ${{github.event.inputs.branches-tags}}
-        git pull origin ${{github.event.inputs.branches-tags}}
-
-        echo '---start make---'
         make BR2_EXTERNAL=/opt/buildroot-kvpstorage qemu_arm_versatile_kvpstorage_defconfig
         make
         cp -r /opt/buildroot/output/images /opt/artifacts
 
-    - name : Upload buildroot-kvpstorage-${{github.event.inputs.branches-tags}}-
+    - name : Upload buildroot-kvpstorage-${{github.event.inputs.branches-tags}}
       uses: actions/upload-artifact@master
       with:
         name: buildroot-kvpstorage-${{github.event.inputs.branches-tags}}
