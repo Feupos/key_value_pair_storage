@@ -75,7 +75,7 @@ jobs:
 
     - name: generate archive
       run: |
-        tar -cvzf $HOME/artifact.tar.gz $GITHUB_WORKSPACE/$INSTALL_LOCATION/bin/Release/KVPStorage
+        tar -cvzf $HOME/artifact.tar.gz build/bin/$env:BUILD_TYPE/KVPStorage
 
     - name: upload artifacts
       uses: actions/upload-artifact@v2
