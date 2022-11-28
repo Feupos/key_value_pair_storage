@@ -72,6 +72,7 @@ int main(int argc, char** argv)
     {
       std::cout << "> ";
       std::getline(std::cin, input);
+      std::cout << "DEBUG> " << input << "\n";
       response = handler.HandleRequest(input);
       std::cout << response << "\n";
     }
