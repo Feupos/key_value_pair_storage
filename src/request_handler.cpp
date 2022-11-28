@@ -33,7 +33,7 @@ std::string RequestHandler::HandleRequest(std::string request)
     {
         if(query[0] == "GET")
         {
-            if(query.size() ==  2)
+            if(query.size() >=  2)
             {
                 response = _storage->GetKey(query[1]);
             }
@@ -52,6 +52,10 @@ std::string RequestHandler::HandleRequest(std::string request)
             else
             {
                 response = "Invalid arguments";
+                for(auto arg: query)
+                {
+                    std::cout << arg << std::endl;
+                }
             }
         }
         else if(query[0] == "DELETE")
