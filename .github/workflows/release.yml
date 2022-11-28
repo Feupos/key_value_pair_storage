@@ -73,13 +73,9 @@ jobs:
         cd build
         ctest -C "$env:BUILD_TYPE" -VV
 
-    # for a release not containing directly the source code, replace the files archived
-    # with the actual files needed (i.e. *.lib/*.a and *.h(pp))
-
     - name: generate archive
       run: |
-        rm -rf build
-        tar -cvzf $HOME/artifact.tar.gz .
+        tar -cvzf $HOME/artifact.tar.gz build/bin/Release/KVPStorage
 
     - name: upload artifacts
       uses: actions/upload-artifact@v2
