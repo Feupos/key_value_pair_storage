@@ -41,13 +41,17 @@ foreach(file ${test_sources})
   else()
     set(${CMAKE_PROJECT_NAME}_TEST_LIB ${CMAKE_PROJECT_NAME})
   endif()
+  
 
   if(${CMAKE_PROJECT_NAME}_USE_GTEST)
     find_package(GTest REQUIRED)
+    set(GOOGLE_MOCK_LIBRARIES GTest::gmock GTest::gmock_main)
 
-    if(${CMAKE_PROJECT_NAME}_USE_GOOGLE_MOCK)
-      set(GOOGLE_MOCK_LIBRARIES GTest::gmock GTest::gmock_main)
-    endif()
+    target_include_directories(
+      ${test_name}_Tests
+      PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/include 
+    )
 
     target_link_libraries(
       ${test_name}_Tests

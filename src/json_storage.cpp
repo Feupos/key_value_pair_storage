@@ -1,11 +1,11 @@
+#include "kvpstorage/json_storage.hpp"
+
 #include <fstream>
 #include <iostream>
 
-#include "kvpstorage/json_storage.hpp"
-
 bool JsonStorage::Initialize(const std::string& file_name)
 {
-  bool ret{true};
+  bool ret{ true };
 
   // Initialize storage by reading from json file
   try
@@ -17,14 +17,13 @@ bool JsonStorage::Initialize(const std::string& file_name)
       this->_data = json::parse(file);
       file.close();
     }
-    catch(const json::parse_error& e)
+    catch (const json::parse_error& e)
     {
       // In case of parse error save empty data to file
       this->SaveDataToFile();
-    }  
-    
+    }
   }
-  catch(const std::exception& e)
+  catch (const std::exception& e)
   {
     ret = false;
   }
@@ -34,24 +33,24 @@ bool JsonStorage::Initialize(const std::string& file_name)
 
 bool JsonStorage::SetKeyValue(const std::string& key, const std::string& value)
 {
-  bool ret{true};
+  bool ret{ true };
 
   try
   {
     this->_data[key] = value;
     this->SaveDataToFile();
   }
-  catch(const std::exception& e)
+  catch (const std::exception& e)
   {
     ret = false;
   }
-  
+
   return ret;
 }
 
 bool JsonStorage::DeleteKey(const std::string& key)
 {
-  bool ret{true};
+  bool ret{ true };
 
   try
   {
@@ -62,11 +61,11 @@ bool JsonStorage::DeleteKey(const std::string& key)
       this->SaveDataToFile();
     }
   }
-  catch(const std::exception& e)
+  catch (const std::exception& e)
   {
     ret = false;
   }
-  
+
   return ret;
 }
 
@@ -77,18 +76,18 @@ std::string JsonStorage::GetKey(const std::string& key)
   {
     ret = this->_data[key];
   }
-  catch(const std::exception& e)
+  catch (const std::exception& e)
   {
     // Return empty string in case key is not found
     ret = "";
   }
-  
+
   return ret;
 }
 
 bool JsonStorage::SaveDataToFile()
 {
-  bool ret{true};
+  bool ret{ true };
 
   try
   {
@@ -96,10 +95,10 @@ bool JsonStorage::SaveDataToFile()
     file << this->_data.dump();
     file.close();
   }
-  catch(const std::exception& e)
+  catch (const std::exception& e)
   {
     ret = false;
   }
-  
+
   return ret;
 }

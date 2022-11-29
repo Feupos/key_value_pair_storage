@@ -1,12 +1,14 @@
 #include <getopt.h>
 
+#include <boost/asio.hpp>
 #include <iostream>
 #include <memory>
-#include <boost/asio.hpp>
 
 #include "kvpstorage/json_storage.hpp"
-#include "kvpstorage/tcp_server.hpp"
 #include "kvpstorage/request_handler.hpp"
+#include "kvpstorage/tcp_server.hpp"
+
+using boost::asio::ip::tcp;
 
 int main(int argc, char** argv)
 {
@@ -59,7 +61,10 @@ int main(int argc, char** argv)
   if (is_server != 0)
   {
     boost::asio::io_context io_context;
-    TcpServer server(io_context, storage, tcp_port);
+    tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), tcp_port));
+    tcp::socket socket(io_context);
+
+    AsioTcpServer server(acceptor, socket, storage);
 
     io_context.run();
   }
