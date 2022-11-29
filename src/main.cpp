@@ -1,12 +1,14 @@
 #include <getopt.h>
 
+#include <boost/asio.hpp>
 #include <iostream>
 #include <memory>
-#include <boost/asio.hpp>
 
 #include "kvpstorage/json_storage.hpp"
-#include "kvpstorage/tcp_server.hpp"
 #include "kvpstorage/request_handler.hpp"
+#include "kvpstorage/tcp_server.hpp"
+
+using boost::asio::ip::tcp;
 
 int main(int argc, char** argv)
 {
@@ -24,7 +26,7 @@ int main(int argc, char** argv)
       "--port <p> : Set TPC port to listen (default 48620)\n"
       "--file <file_name> : Spefify file name to store the data (default data.json)";
 
-  int opt;
+  int opt{-1};
   while ((opt = getopt_long(argc, argv, short_options, long_options, nullptr)) != -1)
   {
     switch (opt)
@@ -48,7 +50,7 @@ int main(int argc, char** argv)
       default:
       {
         std::cout << help_text;
-        break;
+        return 0;
       }
     }
   }
@@ -59,7 +61,10 @@ int main(int argc, char** argv)
   if (is_server != 0)
   {
     boost::asio::io_context io_context;
-    TcpServer server(io_context, storage, tcp_port);
+    tcp::acceptor acceptor(io_context);
+    tcp::socket socket(io_context);
+
+    AsioTcpServer server(acceptor, socket, storage, tcp_port);
 
     io_context.run();
   }

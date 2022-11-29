@@ -11,7 +11,7 @@ class RequestHandler
   RequestHandler(std::shared_ptr<StorageInterface> storage);
   ~RequestHandler() = default;
   std::string HandleRequest(std::string request);
-  //void ReplyRequest(std::string reply);
+  // void ReplyRequest(std::string reply);
 
  private:
   std::shared_ptr<StorageInterface> _storage;

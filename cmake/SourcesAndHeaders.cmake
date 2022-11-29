@@ -16,6 +16,10 @@ set(headers
     include/kvpstorage/json_storage.hpp
 )
 
+set(test_headers
+    include/mocks.hpp
+)
+
 set(test_sources
     src/json_storage_test.cpp
     src/request_handler_test.cpp

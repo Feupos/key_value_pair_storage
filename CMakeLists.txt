@@ -6,15 +6,13 @@ cmake_minimum_required(VERSION 3.15)
 
 project(
   "KVPStorage"
-  VERSION 0.1.6
+  VERSION 0.1.8
   LANGUAGES CXX
 )
 
 #
 # Set project options
 #
-
-option(KVPStorage_BUILD_EXECUTABLE "Build project executables" ON)
 
 include(cmake/StandardSettings.cmake)
 include(cmake/StaticAnalyzers.cmake)
