@@ -6,6 +6,8 @@
 
 Simple application to allow storage of key value pairs. It is a minimal implemtation that allows storage with json files. Test coverage is limited to good weather scenarios.
 
+Buildroot configurations to compile the application are available on a separate repository https://github.com/Feupos/buildroot-kvpstorage.
+
 Template for project structure is generated with base from https://github.com/filipdutescu/modern-cpp-template
 
 ## Usage
