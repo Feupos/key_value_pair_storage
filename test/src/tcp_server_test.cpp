@@ -36,16 +36,16 @@ TEST_F(TcpServerTest, TcpServerRead)
   std::string mock_request = "SET test value\r\n\0";
   EXPECT_CALL(socket, async_read_some(_, _))
       .WillOnce(testing::Invoke([&](boost::asio::mutable_buffer data, async_handler_socket func) {
-        strncpy((char *)data.data(), mock_request.c_str(), mock_request.size());
+        strncpy(static_cast<char*>(data.data()), mock_request.c_str(), mock_request.size());
         func(boost::system::error_code(), mock_request.size());
       }))
-      .WillOnce(testing::Invoke([](boost::asio::mutable_buffer data, async_handler_socket func) {
+      .WillOnce(testing::Invoke([](boost::asio::mutable_buffer, async_handler_socket func) {
         func(boost::system::errc::make_error_code(boost::system::errc::connection_aborted), 0);
       }));
 
   EXPECT_CALL(acceptor, async_accept(_, _))
-      .WillOnce(testing::Invoke([](MockSocket &socket, async_handler_acceptor func) { func(boost::system::error_code()); }))
-      .WillOnce(testing::Invoke([](MockSocket &socket, async_handler_acceptor func) {}));
+      .WillOnce(testing::Invoke([](MockSocket&, async_handler_acceptor func) { func(boost::system::error_code()); }))
+      .WillOnce(testing::Invoke([](MockSocket&, async_handler_acceptor) {}));
 
   // Expected reply based on mock data
   std::string actual_response;
