@@ -4,9 +4,65 @@
 
 # Key Value Pair Storage
 
-Simple application to allow storage of key value pairs.
+Simple application to allow storage of key value pairs. It is a minimal implemtation that allows storage with json files. Test coverage is limited to good weather scenarios.
 
 Template for project structure is generated with base from https://github.com/filipdutescu/modern-cpp-template
+
+## Usage
+
+
+### QEMU
+
+The pipeline generates files for usage with qemu to allow easy demonstration of the application.
+You can find the latest release files [here](https://github.com/Feupos/key_value_pair_storage/releases/latest).
+
+To start the system, download the files, extract, and then run:
+
+```bash
+qemu-system-arm -M versatilepb -kernel opt/artifacts/images/zImage -dtb opt/artifacts/images/versatile-pb.dtb -drive file=opt/artifacts/images/rootfs.ext2,if=scsi -append "root=/dev/sda console=ttyAMA0,115200" -nographic
+```
+
+You might need to modify the paths according to the location you extract the files.
+
+### Application
+
+The KVPStorage application supports SET/GET/DELETE commands as shown below:
+
+The application can controlled via stdin/stdout (command line).
+
+```bash
+$ KVPStorage
+> SET DeviceName TestDevice_123
+OK
+> GET DeviceName
+TestDevice_123
+> DELETE DeviceName
+OK
+> GET DeviceName
+
+```
+
+And it can also be controlled via TCP interface with the same commands.
+
+You can use the option --tcp to enable control via tcp interface and --port <port_number> to specify the port. 
+
+The netcat application can be used to access the application this way.
+
+```bash
+$ netcat 0.0.0.0 48620
+SET DeviceName TestDevice_123
+OK
+GET DeviceName
+TestDevice_123
+DELETE DeviceName
+OK
+GET DeviceName
+
+```
+
+The --file can be used to specify the storage file location.
+
+## Building the project
 
 ### Prerequisites
 
@@ -19,7 +75,6 @@ To use the project you need the following tools:
 
 You also need to install the dependencies for gtest, nhloman json and boost. This can be done in Ubuntu with the following commands:
 
-```bash
 wget -c 'http://sourceforge.net/projects/boost/files/boost/1.80.0/boost_1_80_0.tar.bz2/download'
 tar xf download
 cd boost_1_80_0
@@ -38,7 +93,7 @@ cmake --build build --config Release
 cmake --build build --target install --config Release
 ```
 
-## Building the project
+## Building
 
 To build the project, all you need to do is run a similar **CMake** routine
 to the the one below:
@@ -48,19 +103,6 @@ mkdir build/ && cd build/
 cmake ..
 cmake --build . --target install
 ```
-
-## Generating the documentation
-
-In order to generate documentation for the project, you need to configure the build
-to use Doxygen. This is easily done, by modifying the workflow shown above as follows:
-
-```bash
-mkdir build/ && cd build/
-cmake .. -DKVPStorage_ENABLE_DOXYGEN=1 -DCMAKE_INSTALL_PREFIX=/absolute/path/to/custom/install/directory
-cmake --build . --target doxygen-docs
-```
-
-> ***Note:*** *This will generate a `docs/` directory in the **project's root directory**.*
 
 ## Running the tests
 

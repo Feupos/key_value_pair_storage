@@ -38,7 +38,7 @@ std::string RequestHandler::HandleRequest(std::string request)
 {
   size_t pos = 0;
   std::vector<std::string> query;
-  std::string response = "";
+  std::string response{};
 
   // Remove unwanted characters from input
   SanitizeInput(request);
@@ -50,12 +50,12 @@ std::string RequestHandler::HandleRequest(std::string request)
     request.erase(0, pos + 1);
   }
   // Last parameter from request if without end delimiter
-  if (request.size() > 0)
+  if (!request.empty())
   {
     query.push_back(request);
   }
 
-  if (query.size() > 0)
+  if (!query.empty())
   {
     if (query[0] == "GET")
     {
