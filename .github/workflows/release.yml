@@ -49,7 +49,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ runner.os }}-${{ steps.version.outputs.name }}
-        path: '$HOME/artifact.tar.gz'
+        path: '~/artifact.*'
 
   release:
     if: contains(github.ref, 'tags/v')
