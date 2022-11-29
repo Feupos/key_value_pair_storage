@@ -1,7 +1,6 @@
 #include "kvpstorage/json_storage.hpp"
 
 #include <fstream>
-#include <iostream>
 
 bool JsonStorage::Initialize(const std::string& file_name)
 {

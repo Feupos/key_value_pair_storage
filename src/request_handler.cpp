@@ -1,7 +1,6 @@
 #include "kvpstorage/request_handler.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
