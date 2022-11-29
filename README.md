@@ -75,6 +75,7 @@ To use the project you need the following tools:
 
 You also need to install the dependencies for gtest, nhloman json and boost. This can be done in Ubuntu with the following commands:
 
+```bash
 wget -c 'http://sourceforge.net/projects/boost/files/boost/1.80.0/boost_1_80_0.tar.bz2/download'
 tar xf download
 cd boost_1_80_0
