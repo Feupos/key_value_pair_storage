@@ -2,10 +2,36 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 #include "kvpstorage/request_handler.hpp"
 
-static const char REQUEST_DELIMITERS[] = {' ', '\n', '\r'};
+static const char REQUEST_DELIMITER = ' ';
+
+void SanitizeInput(std::string &stringValue)
+{
+    // Add backslashes.
+    for (auto i = stringValue.begin();;) {
+        auto const pos = std::find_if(
+            i, stringValue.end(),
+            [](char const c) { return '\\' == c || '\'' == c || '"' == c; }
+        );
+        if (pos == stringValue.end()) {
+            break;
+        }
+        i = std::next(stringValue.insert(pos, '\\'), 2);
+    }
+
+    // Removes others.
+    stringValue.erase(
+        std::remove_if(
+            stringValue.begin(), stringValue.end(), [](char const c) {
+                return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c;
+            }
+        ),
+        stringValue.end()
+    );
+}
 
 RequestHandler::RequestHandler(std::shared_ptr<StorageInterface> storage): _storage{storage}
 {
@@ -17,8 +43,11 @@ std::string RequestHandler::HandleRequest(std::string request)
     std::vector<std::string> query;
     std::string response = "";
 
+    // Remove unwanted characters from input
+    SanitizeInput(request);
+
     // Parse all command parameters
-    while ((pos = request.find_first_of(REQUEST_DELIMITERS)) != std::string::npos)
+    while ((pos = request.find(' ')) != std::string::npos)
     {
         query.push_back(request.substr(0, pos));
         request.erase(0, pos + 1);

@@ -1,87 +1,55 @@
-name: Release
+name: BuildRoot
 
 on:
   push:
     tags:
       - 'v*'
-
 env:
   PROJECT_NAME: "key_value_pair_storage"
   BUILD_TYPE: Release
 
 jobs:
   build:
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-        - {
-            name: "Ubuntu Latest GCC",
-            artifact_ext: '.tar.gz',
-            os: ubuntu-latest,
-            cc: "gcc",
-            cxx: "g++",
-          }
+    runs-on: ubuntu-20.04
     steps:
-    
-    - name: set version name
-      id: version
-      run: echo ::set-output name=name::${GITHUB_REF#refs/tags/}
-
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
-
-    - name: cache dependencies
-      uses: actions/cache@v2
-      id: cache
-      with:
-        path: ${{ github.HOME }}/.local
-        key: ${{ runner.os }}-dependencies
+    - uses: actions/checkout@v2
+    - name: clone source code
+      run: |
+        git clone https://github.com/Feupos/buildroot-kvpstorage /opt/buildroot-kvpstorage
+        git clone https://github.com/buildroot/buildroot.git /opt/buildroot
+        cd /opt/buildroot
 
     - name: install dependencies
       if: ${{ steps.cache.output.cache-hit != 'true' }}
       run: |
-        wget -c 'http://sourceforge.net/projects/boost/files/boost/1.80.0/boost_1_80_0.tar.bz2/download'
-        tar xf download
-        cd boost_1_80_0
-        ./bootstrap.sh
-        sudo ./b2 install
-        cd ..
-        git clone https://github.com/google/googletest.git --branch release-1.10.0
-        cd googletest
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local" -Dgtest_force_shared_crt=1
-        cmake --build build --config Release
-        cmake --build build --target install --config Release
-        git clone https://github.com/nlohmann/json.git --branch v3.11.2
-        cd json
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
-        cmake --build build --config Release
-        cmake --build build --target install --config Release
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get install -y make gcc g++ unzip git bc python device-tree-compiler mtd-utils
 
-    - name: configure
-      run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
-      
-    - name: build
-      run: cmake --build build --config "$env:BUILD_TYPE" -j4
+    - name: set version name
+      id: version
+      run: echo ::set-output name=name::${GITHUB_REF#refs/tags/}
 
-    - name: run tests
+    - name: bulid
+      env:
+          RELEASE_VERSION: ${{ steps.version.outputs.name }}
       run: |
-        cd build
-        ctest -C "$env:BUILD_TYPE" -VV
+        echo build kvpstorage $RELEASE_VERSION using make BR2_EXTERNAL=/opt/buildroot-kvpstorage qemu_arm_versatile_kvpstorage_defconfig
+        mkdir /opt/artifacts
+        cd /opt/buildroot
+        make BR2_EXTERNAL=/opt/buildroot-kvpstorage qemu_arm_versatile_kvpstorage_defconfig
+        make
+        cp -r /opt/buildroot/output/images /opt/artifacts
 
     - name: generate archive
       run: |
-        tar -cvzf $HOME/artifact.tar.gz "build/bin/$BUILD_TYPE/KVPStorage"
-
+        tar -cvzf $HOME/artifact.tar.gz /opt/artifacts/
+    
     - name: upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: ${{ runner.os }}-${{ steps.version.outputs.name }}
-        path: '~/artifact.*'
+        path: '$HOME/artifact.tar.gz'
 
   release:
     if: contains(github.ref, 'tags/v')
